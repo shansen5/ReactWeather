@@ -5,14 +5,6 @@ var WeatherMessage = require( 'WeatherMessage' );
 var openWeatherMap = require( 'openWeatherMap' );
 
 var Weather = React.createClass( {
-    getDefaultProps: function () {
-        return {
-            city: 'Default city',
-            temp: 49,
-            pressure: 100,
-            humidity: 40
-        }
-    },
     getInitialState: function () {
         return {
             isLoading: false
@@ -24,24 +16,20 @@ var Weather = React.createClass( {
             this.setState( {
                 isLoading: false,
                 city: city,
-                temp: data.temp,
-                pressure: data.pressure,
-                humidity: data.humidity,
-                tempMin: data.temp_min,
-                tempMax: data.temp_max
+                weatherData: data
             })
         }, function ( error ) {
             alert( error );
-            that.setState( { isLoading: false });
+            this.setState( { isLoading: false });
         });
     },
     render: function () {
         var stateData = this.state;
-        var {isLoading, temp, city} = stateData;
+        var {isLoading, city, weatherData } = stateData;
         function renderMessage () {
             if ( isLoading ) {
                 return <h3>Fetching...</h3>;
-            } else if ( temp && city ) {
+            } else if ( city && weatherData ) {
                 return <WeatherMessage data={stateData}/>;
             }
         }

@@ -13,7 +13,7 @@ module.exports = {
             } else if ( response.data.cod && response.data.message ) {
                 throw new Error( response.data.message );
             } else {
-                return response.data.main;
+                return response.data;
             }
         }, function ( response ) {
             if ( !response.data ) {
