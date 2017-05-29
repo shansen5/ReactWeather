@@ -2,7 +2,7 @@ var React = require( 'react' );
 
 var WeatherMessage = ( {data} ) => {
     return ( 
-        <div>
+        <div className="text-center">
             <p>{data.city}:
                 <br/>       Temperature is {data.weatherData.main.temp} degrees
                 <br/>        Pressure is {data.weatherData.main.pressure} millibars

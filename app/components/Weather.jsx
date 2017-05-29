@@ -2,7 +2,9 @@ var React = require( 'react' );
 
 var WeatherForm = require( 'WeatherForm' );
 var WeatherMessage = require( 'WeatherMessage' );
+var ErrorModal = require( 'ErrorModal' );
 var openWeatherMap = require( 'openWeatherMap' );
+
 
 var Weather = React.createClass( {
     getInitialState: function () {
@@ -11,33 +13,50 @@ var Weather = React.createClass( {
         }
     },
     handleSearch: function( city ) {
-        this.setState( { isLoading: true } );
+        var that = this;
+        this.setState( { 
+            isLoading: true,
+            errorMessage: undefined
+        });
         openWeatherMap.getWeatherData( city ).then ( ( data ) => {
-            this.setState( {
+            that.setState( {
                 isLoading: false,
                 city: city,
                 weatherData: data
             })
         }, function ( error ) {
-            alert( error );
-            this.setState( { isLoading: false });
+            that.setState( { 
+                isLoading: false,
+                errorMessage: error.message
+            });
         });
     },
     render: function () {
         var stateData = this.state;
-        var {isLoading, city, weatherData } = stateData;
+        var {isLoading, city, weatherData, errorMessage } = stateData;
+
         function renderMessage () {
             if ( isLoading ) {
-                return <h3>Fetching...</h3>;
+                return <h3 className="text-center">Fetching...</h3>;
             } else if ( city && weatherData ) {
                 return <WeatherMessage data={stateData}/>;
             }
         }
+
+        function renderError () {
+            if ( typeof errorMessage === 'string' ) {
+                return (
+                    <ErrorModal message={errorMessage} title="City?"/>
+                )
+            }
+        }
+
         return (
             <div>
-                <h3>Weather Component</h3>
+                <h1 className="text-center">Get Weather</h1>
                 <WeatherForm onSearch={this.handleSearch}/>
                 {renderMessage()}
+                {renderError()}
             </div>
         )
     }

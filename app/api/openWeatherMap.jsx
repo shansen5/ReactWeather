@@ -15,11 +15,11 @@ module.exports = {
             } else {
                 return response.data;
             }
-        }, function ( response ) {
-            if ( !response.data ) {
+        }, function ( error ) {
+            if ( !error.response.data ) {
                 throw new Error( 'No data returned' );
             } else {
-                throw new Error( response.data.message );
+                throw new Error( error.response.data.message );
             }
         });
     }
