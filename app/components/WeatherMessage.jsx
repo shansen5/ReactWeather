@@ -1,6 +1,12 @@
 var React = require( 'react' );
 
 var WeatherMessage = ( {data} ) => {
+    var utcSeconds = parseInt(data.weatherData.sys.sunrise);
+    var sunrise = new Date( 0 );
+    sunrise.setUTCSeconds( utcSeconds );
+    utcSeconds = parseInt(data.weatherData.sys.sunset);
+    var sunset = new Date( 0 );
+    sunset.setUTCSeconds( utcSeconds );
     return ( 
         <div className="text-center">
             <p>{data.city}:
@@ -10,10 +16,8 @@ var WeatherMessage = ( {data} ) => {
                 <br/>        Cloud cover is {data.weatherData.clouds.all} percent
                 <br/>        Wind speed is {data.weatherData.wind.speed} mph
                 <br/>        Wind direction is {data.weatherData.wind.deg} degrees
-                <br/>        Min temperature is {data.weatherData.main.temp_min} degrees
-                <br/>        Max temperature is {data.weatherData.main.temp_max} degrees
-                <br/>        Sunrise is {data.weatherData.sys.sunrise}
-                <br/>        Sunset is {data.weatherData.sys.sunset}
+                <br/>        Sunrise is {sunrise.toString()} (in your time zone)
+                <br/>        Sunset is {sunset.toString()} (in your time zone)
             </p>
         </div>
     )
